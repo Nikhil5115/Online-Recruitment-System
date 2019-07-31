@@ -1,0 +1,155 @@
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="com.mysql.jdbc.Statement"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="com.db.DBConnection"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Seeking an Job Portal Category Flat Bootstarp Resposive Website Template | Register :: w3layouts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Seeking Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<link href="../css/bootstrap-3.1.1.min.css" rel='stylesheet' type='text/css' />
+<link href="../css/validation_css.css" rel='stylesheet' type='text/css' />
+<link href="../css/table_style.css" rel='stylesheet' type='text/css' />
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="../js/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/datetimepicker_css.js"></script>
+<script src="../js/jquery.validate.min.js"></script>
+
+<script type= "text/javascript" src = "js/countries.js"></script>
+
+<!-- Custom Theme files -->
+<link href="../css/style.css" rel='stylesheet' type='text/css' />
+<link href='//fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900' rel='stylesheet' type='text/css'>
+<!----font-Awesome----->
+<link href="../css/font-awesome.css" rel="stylesheet"> 
+<!----font-Awesome----->
+<style type="text/css">
+.error
+{
+	color: red;
+}
+</style>
+</head>
+<body>
+<%!String uname;
+	String id;
+	int cid;%>
+<%
+
+try
+{
+	if(session.getAttribute("cname").toString()!=null)
+	{
+		uname=session.getAttribute("cname").toString();
+		id=session.getAttribute("cid").toString();
+		cid=Integer.parseInt(id);
+	}
+}
+catch(Exception e)
+{
+	e.printStackTrace();
+}
+	
+		
+%>
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container">
+	    <div class="navbar-header">
+	        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+	        </button>
+	        <a class="navbar-brand" href="index.jsp"><img src="../images/logo.png" alt=""/></a>
+	    </div>
+	    <!--/.navbar-header-->
+	    <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" style="height: 1px;">
+	        <ul class="nav navbar-nav">
+		        <li class="dropdown">
+		            <a href="logout.jsp">Logout <%=uname %></a>
+		        </li>	        
+		        <li><a href="view_job.jsp">View Job Detail</a></li>
+		        <li></li>
+		        <li><a href="view_app_candidate.jsp">View Applied Candidate</a></li>
+		        <li></li>
+		        <li><a href="company_home.jsp">Add Job Detail</a></li>
+		        <li></li>
+	        </ul>
+	    </div>
+	    <div class="clearfix"> </div>
+	  </div>
+	    <!--/.navbar-collapse-->
+	</nav>
+<div class="banner_1">
+	<div class="container">
+		<div id="search_wrapper1">
+		   <div id="search_form" class="clearfix">
+		    <h1></h1>
+		    <p>
+			
+			</p>
+           </div>
+		</div>
+   </div> 
+</div>	
+<br><br>
+<center>
+			<hr>
+	     		<h1>Job Details </h1>
+	     	<hr>  			
+	<table border=2 cellspacing="20" cellpadding="10">
+		<tr>
+			<!-- <th>Job ID</th>
+			<th>Company Id</th> -->
+			<th>Skill</th>
+			<th>No Of Vacancy</th>
+			<th>Location</th>
+			<th>Experience</th>
+			<th>Salary</th>
+			<th>Job Description</th>
+			
+			<th>Delete</th>
+		</tr>
+		<%
+			DBConnection db=new DBConnection();
+			Connection conn=db.GetConnection();
+			
+			String sql="select * from job_master where c_id=?";
+			
+			PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, cid);
+			
+			ResultSet rs=pst.executeQuery();
+			
+			while(rs.next())
+			{
+		%>
+				<tr>
+					<%-- <td><%=rs.getInt("id") %></td>
+					<td><%=rs.getInt("c_id") %></td> --%>
+					<td><%=rs.getString("c_skill") %></td>
+					<td><%=rs.getString("c_vacancy") %></td>
+					<td><%=rs.getString("c_location") %></td>
+					<td><%=rs.getString("c_exp") %></td>
+					<td><%=rs.getString("c_sal") %></td>
+					<td><%=rs.getString("c_desc") %></td>
+					
+					<td><a href="deleteJob.jsp?id=<%=rs.getInt("id")%>">Delete</a></td>
+				</tr>
+		<%
+				
+			}
+		%>
+	</table>
+	</center>
+</body>
+</html>	
